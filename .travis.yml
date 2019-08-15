@@ -71,13 +71,13 @@ before_script:
     fi
 
 script:
-  - mkdir -p build && cd build
+  - mkdir -p build && pushd build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - cmake --build .
-  - cd ..
+  - popd
 
 after_success:
-  - "if [ -f bin/dmcsvtest ] ; then bin/dmcsvtest ; fi"
+  - echo success
 
 after_failure:
   - echo failure

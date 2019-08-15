@@ -1,5 +1,14 @@
+
+rem - clone code
+rem git clone https://github.com/brinkqiang/dmcsv.git
+rem pushd dmcsv
+rem git submodule update --init --recursive
+
 rmdir /S /Q build
 mkdir build
-cd build
+pushd build
 cmake -A x64 -DCMAKE_BUILD_TYPE=relwithdebinfo ..
-cd ..
+cmake --build . --config relwithdebinfo
+popd
+
+rem pause
