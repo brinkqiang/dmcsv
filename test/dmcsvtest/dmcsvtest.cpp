@@ -36,10 +36,11 @@ TEST(dmcsv, dmcsv_read) {
 
     uint64_t qwCount = 0;
 
-    csv::CSVReader reader(strFile, csv::DEFAULT_CSV);
+    csv::CSVReader reader(strFile, csv::GUESS_CSV);
+    std::vector<std::string> cols = reader.get_col_names();
     csv::CSVRow rows;
     for (size_t i = 0; reader.read_row(rows); i++) {
-        qwCount -= rows["age"].get<uint64_t>();
+        qwCount += rows[1].get<uint64_t>();
     }
     std::cout << qwCount << std::endl;
 }
