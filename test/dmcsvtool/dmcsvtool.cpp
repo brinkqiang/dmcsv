@@ -7,12 +7,10 @@
 
 #include <vector>
 #include <queue>
-#include <filesystem>
 
 int main( int argc, char** argv )
 {
     std::string strFile = DMGetRootPath() + PATH_DELIMITER_STR + "slist.csv";
-
 
     if (!DMIsFile(strFile))
     {
