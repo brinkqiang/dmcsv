@@ -14,7 +14,7 @@ int main( int argc, char** argv )
     std::string strFile = DMGetRootPath() + PATH_DELIMITER_STR + "slist.csv";
 
 
-    if (!std::filesystem::exists(strFile))
+    if (!DMIsFile(strFile))
     {
         std::cout << "file: " << strFile << " not exist" << std::endl;
         return -1;

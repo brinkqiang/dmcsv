@@ -88,9 +88,9 @@ static inline time_t DMFormatDateTime( const std::string& strTime,
     return ret;
 }
 
-static bool DMIsDirectory( const char* dir_name ) {
+static bool DMIsDirectory( const char* dir ) {
 #ifdef WIN32
-    int ret = GetFileAttributesA( dir_name );
+    int ret = GetFileAttributesA( dir );
 
     if ( ret == -1 ) {
         return false;
@@ -99,7 +99,7 @@ static bool DMIsDirectory( const char* dir_name ) {
     return !!( FILE_ATTRIBUTE_DIRECTORY & ret );
 #else
     struct stat fileStat;
-    int ret = stat( dir_name, &fileStat );
+    int ret = stat( dir, &fileStat );
 
     if ( ret == 0 ) {
         return S_ISDIR( fileStat.st_mode );
@@ -107,6 +107,35 @@ static bool DMIsDirectory( const char* dir_name ) {
 
     return false;
 #endif
+}
+
+static bool DMIsDirectory( const std::string& dir ) {
+    return DMIsDirectory(dir.c_str());
+}
+
+static bool DMIsFile( const char* file ) {
+#ifdef WIN32
+    int ret = GetFileAttributesA( file );
+
+    if ( ret == -1 ) {
+        return false;
+    }
+
+    return !( FILE_ATTRIBUTE_DIRECTORY & ret );
+#else
+    struct stat fileStat;
+    int ret = stat( file, &fileStat );
+
+    if ( ret == 0 ) {
+        return S_ISREG( fileStat.st_mode );
+    }
+
+    return false;
+#endif
+}
+
+static bool DMIsFile( const std::string& file ) {
+    return DMIsFile(file.c_str());
 }
 
 static inline bool DMCreateDirectory(const char* dir_name) {
