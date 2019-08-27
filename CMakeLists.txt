@@ -16,6 +16,9 @@ MESSAGE(STATUS "VERSION: ${DMCSV_VERSION}")
 
 OPTION(USE_DMCSV "use dmcsv" OFF)
 
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 LibImport("dmcsv" "src")
 ExeImport("test" "dmcsv")
 
