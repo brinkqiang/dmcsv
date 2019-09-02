@@ -13,7 +13,7 @@ TEST(dmcsv, dmcsv_init) {
 
     uint64_t qwCount = 0;
 
-    for (int i = 0; i < 100000; ++i)
+    for (int i = 0; i < 1000000; ++i)
     {
         qwCount += i;
         q.push({ "Andy" + std::to_string(i), std::to_string(i), "172.30.10.21" });
@@ -32,12 +32,23 @@ TEST(dmcsv, dmcsv_write) {
     out.close();
 }
 
-TEST(dmcsv, dmcsv_read) {
+TEST(dmcsv, dmcsv_read_name) {
 
     uint64_t qwCount = 0;
 
     csv::CSVReader reader(strFile, csv::DEFAULT_CSV);
-    std::vector<std::string> cols = reader.get_col_names();
+    csv::CSVRow rows;
+    for (size_t i = 0; reader.read_row(rows); i++) {
+        qwCount += rows["age"].get<uint64_t>();
+    }
+    std::cout << qwCount << std::endl;
+}
+
+TEST(dmcsv, dmcsv_read_index) {
+
+    uint64_t qwCount = 0;
+
+    csv::CSVReader reader(strFile, csv::DEFAULT_CSV);
     csv::CSVRow rows;
     for (size_t i = 0; reader.read_row(rows); i++) {
         qwCount += rows[1].get<uint64_t>();
@@ -62,4 +73,8 @@ TEST(dsv_filter, dsv_filter_read) {
     }
 
     std::cout << qwCount << std::endl;
+}
+
+TEST(dmformat, dmformat) {
+
 }
