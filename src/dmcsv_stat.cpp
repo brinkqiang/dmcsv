@@ -82,8 +82,8 @@ namespace csv {
     void CSVStat::calc() {
         /** Go through all records and calculate specified statistics */
         for (size_t i = 0; i < this->col_names->size(); i++) {
-            dtypes.push_back({});
-            counts.push_back({});
+            dtypes.push_back(TypeCount());
+            counts.push_back(FreqCount());
             rolling_means.push_back(0);
             rolling_vars.push_back(0);
             mins.push_back(NAN);
