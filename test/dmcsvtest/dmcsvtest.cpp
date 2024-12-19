@@ -1,7 +1,6 @@
 #include "gtest.h"
 
-#include "dmcsv_parser.hpp"
-#include "dmcsv_writer.hpp"
+#include "dmcsv.hpp"
 #include "dmdsvfilter.hpp"
 
 std::string strFile = "slist.csv";
