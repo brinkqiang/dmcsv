@@ -5,23 +5,17 @@
 # yum -y install gcc gcc-c++ autoconf libtool automake make
 #
 
-# - clone code
-# git clone https://github.com/brinkqiang/dmcsv.git
-# pushd dmcsv
-# git submodule update --init --recursive
-#
-
-# pushd thirdparty/depends_path
+# pushd thirdparty/dmprotobuf
 # libtoolize && aclocal && autoheader && autoconf && automake --add-missing
 # sh configure
 # popd
 
 rm -rf build
-mkdir -p build
-pushd build
+mkdir build
+cd build
 cmake -DCMAKE_BUILD_TYPE=relwithdebinfo ..
-cmake --build .
-popd
+cmake --build . --config relwithdebinfo -- -j$(nproc)
+cd ..
 
 # popd
 
