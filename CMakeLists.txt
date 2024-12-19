@@ -7,34 +7,12 @@ INCLUDE(cmake/ModuleImport.cmake)
 INCLUDE(cmake/ModuleCompileOptions.cmake)
 ModuleSetCompileOptions()
 
-SET(DMCSV_VERSION_MAJOR "1")
-SET(DMCSV_VERSION_MINOR "0")
-SET(DMCSV_VERSION_PATCH "1")
-SET(DMCSV_VERSION "${DMCSV_VERSION_MAJOR}.${DMCSV_VERSION_MINOR}.${DMCSV_VERSION_PATCH}")
-
-MESSAGE(STATUS "VERSION: ${DMCSV_VERSION}")
-
-OPTION(USE_DMCSV "use dmcsv" OFF)
-
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 LibImport("dmcsv" "src")
-ExeImport("test" "dmcsv")
 
-#ADD_CUSTOM_COMMAND(
-#TARGET dmcsvtest
-#PRE_BUILD
-#COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#${CMAKE_CURRENT_SOURCE_DIR}/config/test.csv
-#$<TARGET_FILE_DIR:dmcsvtest>
-#)
+if (PROJECT_IS_TOP_LEVEL)
+    ExeImport("test" "dmcsv")
+endif(PROJECT_IS_TOP_LEVEL)
 
-#INSTALL(DIRECTORY include/ DESTINATION include)
-#INSTALL(TARGETS dmcsv
-#        RUNTIME DESTINATION bin
-#        LIBRARY DESTINATION lib
-#        ARCHIVE DESTINATION lib)
-
-#SET(DMCSV_LIBS "dmcsv")
-#MARK_AS_ADVANCED(${DMCSV_LIBS})
