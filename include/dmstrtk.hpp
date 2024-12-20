@@ -28164,9 +28164,6 @@ static inline std::string data()
 
 } // namespace strtk
 
-#pragma warning(enbale:4996 4615)
-
-
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
