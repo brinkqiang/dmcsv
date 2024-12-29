@@ -508,7 +508,7 @@ inline std::string type_to_string(const T& t)
    namespace strtk { namespace details {       \
 
 #define strtk_end_register_string_to_type \
-   }}                                        \
+   } }                                        \
 
 #define strtk_string_to_type_begin(Type)                                               \
    namespace strtk { namespace details { template <typename Iterator>                     \
@@ -516,7 +516,7 @@ inline std::string type_to_string(const T& t)
                                              Type& t, details::not_supported_type_tag&) { \
 
 #define strtk_string_to_type_end() \
-   }}}                                \
+   } } }                                \
 
 template <typename T,
           typename Allocator,
@@ -3517,7 +3517,7 @@ public:
     }
 
     template <typename Iterator>
-    inline void operator()(const std::pair<Iterator,Iterator>& r) const
+    inline void operator()(const std::pair<Iterator,Iterator>& r)
     {
         value_type t;
 
@@ -11798,7 +11798,7 @@ inline std::size_t parse(const int& argc, char* argv[],
    ,ignore_token()                    \
 
 #define strtk_parse_end() \
-   );}}                      \
+   );} }                      \
 
 #define strtk_def_parse_n_seq(Type)                                                                      \
    template <typename T,                                                                                    \
@@ -19785,7 +19785,7 @@ strtk_register_decsink_type_tag(double     )
 strtk_register_decsink_type_tag(long double)
 
 #define strtk_register_userdef_type_sink(T) \
-      namespace strtk { namespace details { strtk_register_sink_type_tag(T) }}
+      namespace strtk { namespace details { strtk_register_sink_type_tag(T) } }
 
 #undef strtk_register_unsigned_type_tag
 #undef strtk_register_signed_type_tag
@@ -28003,119 +28003,42 @@ strtk_register_pair_to_ostream(const std::string::const_iterator)
 #undef strtk_register_pair_to_ostream
 
 } // namespace anonymous
+#include <chrono>
+#include <limits>
 
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#else
-#include <sys/time.h>
-#include <sys/types.h>
-#endif
-namespace strtk
-{
-namespace util
-{
-class timer
-{
-public:
+namespace strtk {
+	namespace util {
 
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-    timer()
-        : in_use_(false)
-    {
-        QueryPerformanceFrequency(&clock_frequency_);
-    }
+		class timer {
+		public:
+			timer() : in_use_(false) {}
 
-    inline void start()
-    {
-        in_use_ = true;
-        QueryPerformanceCounter(&start_time_);
-    }
+			inline void start() {
+				in_use_ = true;
+				start_time_ = std::chrono::high_resolution_clock::now();
+	}
 
-    inline void stop()
-    {
-        QueryPerformanceCounter(&stop_time_);
-        in_use_ = false;
-    }
+			inline void stop() {
+				stop_time_ = std::chrono::high_resolution_clock::now();
+				in_use_ = false;
+			}
 
-    inline double time() const
-    {
-        return (1.0 * (stop_time_.QuadPart - start_time_.QuadPart)) /
-               (1.0 * clock_frequency_.QuadPart);
-    }
+			inline double time() const {
+				if (!in_use_) {
+					auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_time_ - start_time_);
+					return duration.count() * 0.000001; // 转换为秒
+				}
+				return std::numeric_limits<double>::max(); // 如果计时器仍在运行，返回最大值表示错误状态
+			}
 
-#else
+			inline bool in_use() const {
+				return in_use_;
+			}
 
-    timer()
-        : in_use_(false)
-    {
-        start_time_.tv_sec  = 0;
-        start_time_.tv_usec = 0;
-        stop_time_.tv_sec   = 0;
-        stop_time_.tv_usec  = 0;
-    }
-
-    inline void start()
-    {
-        in_use_ = true;
-        gettimeofday(&start_time_,0);
-    }
-
-    inline void stop()
-    {
-        gettimeofday(&stop_time_, 0);
-        in_use_ = false;
-    }
-
-    inline unsigned long long int usec_time() const
-    {
-        if (!in_use_)
-        {
-            if (stop_time_.tv_sec >= start_time_.tv_sec)
-            {
-                return 1000000 * (stop_time_.tv_sec  - start_time_.tv_sec ) +
-                       (stop_time_.tv_usec - start_time_.tv_usec);
-            }
-            else
-            {
-                return std::numeric_limits<unsigned long long int>::max();
-            }
-        }
-        else
-        {
-            return std::numeric_limits<unsigned long long int>::max();
-        }
-    }
-
-    inline double time() const
-    {
-        return usec_time() * 0.000001;
-    }
-
-#endif
-
-    inline bool in_use() const
-    {
-        return in_use_;
-    }
-
-private:
-
-    bool in_use_;
-
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-    LARGE_INTEGER start_time_;
-    LARGE_INTEGER stop_time_;
-    LARGE_INTEGER clock_frequency_;
-#else
-    struct timeval start_time_;
-    struct timeval stop_time_;
-#endif
+		private:
+			bool in_use_;
+			std::chrono::high_resolution_clock::time_point start_time_;
+			std::chrono::high_resolution_clock::time_point stop_time_;
 };
 
 class scoped_timer

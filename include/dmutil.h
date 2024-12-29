@@ -126,6 +126,31 @@ static bool DMIsDirectory(const char *dir_name)
 #endif
 }
 
+static bool DMIsFile( const char* file ) {
+#ifdef WIN32
+    int ret = GetFileAttributesA( file );
+
+    if ( ret == -1 ) {
+        return false;
+    }
+
+    return !( FILE_ATTRIBUTE_DIRECTORY & ret );
+#else
+    struct stat fileStat;
+    int ret = stat( file, &fileStat );
+
+    if ( ret == 0 ) {
+        return S_ISREG( fileStat.st_mode );
+    }
+
+    return false;
+#endif
+}
+
+static bool DMIsFile( const std::string& file ) {
+    return DMIsFile(file.c_str());
+}
+
 static inline bool DMCreateDirectory(const char *dir_name)
 {
 #ifdef _WIN32
