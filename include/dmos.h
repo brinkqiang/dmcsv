@@ -22,7 +22,7 @@
 #ifndef __DMOS_H_INCLUDE__
 #define __DMOS_H_INCLUDE__
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
@@ -40,25 +40,8 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
-
 #include <csignal>
-
-#include <string>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <list>
-
-#include <set>
-#include <map>
-
-#include <sstream>
-#include <fstream>
-#include <iostream>
-
 #include <winsock2.h>
-
-
 #include <windows.h>
 #include <direct.h>
 #include <process.h>
@@ -72,7 +55,7 @@ namespace stdext {
 }
 
 namespace std {
-using namespace stdext;
+    using namespace stdext;
 }
 
 #define VSNPRINTF _vsnprintf
@@ -91,19 +74,7 @@ using namespace stdext;
 
 #include <csignal>
 
-#include <string>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <list>
-
-#include <set>
-#include <map>
-
-#include <sstream>
-#include <fstream>
-#include <iostream>
-
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -118,8 +89,15 @@ using namespace stdext;
 #include <unistd.h>
 
 #ifndef MAX_PATH
-#define MAX_PATH    PATH_MAX
+
+#ifndef PATH_MAX
+#define PATH_MAX 512
 #endif
+
+#define MAX_PATH    PATH_MAX
+
+#endif
+
 #define VSNPRINTF vsnprintf
 #define SleepMs(x) usleep(x*1000)
 #ifndef INFINITE
@@ -129,20 +107,20 @@ using namespace stdext;
 
 #define PATH_IS_DELIMITER(x)  ('\\' == x || '/' == x)
 
-#ifdef WIN32
+#ifdef _WIN32
 #define PATH_DELIMITER '\\'
 #else
 #define PATH_DELIMITER '/'
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #define PATH_DELIMITER_STR "\\"
 #else
 #define PATH_DELIMITER_STR "/"
 #endif
 #define DMASSERT assert
 
-#ifdef WIN32
+#ifdef _WIN32
 #define DMAPI __stdcall
 typedef HANDLE DMHANDLE;
 #define DMINVALID_HANDLE  NULL
