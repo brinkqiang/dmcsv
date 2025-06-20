@@ -40,8 +40,26 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
+
 #include <csignal>
+
+#include <string>
+#include <vector>
+#include <queue>
+#include <deque>
+#include <list>
+
+#include <set>
+#include <map>
+
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <memory>
+
 #include <winsock2.h>
+
+
 #include <windows.h>
 #include <direct.h>
 #include <process.h>
@@ -55,7 +73,7 @@ namespace stdext {
 }
 
 namespace std {
-    using namespace stdext;
+using namespace stdext;
 }
 
 #define VSNPRINTF _vsnprintf
@@ -74,7 +92,20 @@ namespace std {
 
 #include <csignal>
 
-#include <sys/time.h>
+#include <string>
+#include <vector>
+#include <queue>
+#include <deque>
+#include <list>
+
+#include <set>
+#include <map>
+
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <memory>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -89,15 +120,8 @@ namespace std {
 #include <unistd.h>
 
 #ifndef MAX_PATH
-
-#ifndef PATH_MAX
-#define PATH_MAX 512
-#endif
-
 #define MAX_PATH    PATH_MAX
-
 #endif
-
 #define VSNPRINTF vsnprintf
 #define SleepMs(x) usleep(x*1000)
 #ifndef INFINITE
@@ -128,6 +152,24 @@ typedef HANDLE DMHANDLE;
 #define DMAPI
 typedef int DMHANDLE;
 #define DMINVALID_HANDLE  0
+#endif
+
+#ifdef _WIN32
+
+#ifdef _MSC_VER
+#define DMEXPORT_DLL __declspec(dllexport)
+#else
+#define DMEXPORT_DLL
+#endif
+
+#else
+
+#ifdef __GNUC__
+#define DMEXPORT_DLL __attribute__((visibility("default")))
+#else
+#define DMEXPORT_DLL
+#endif
+
 #endif
 
 #endif // __DMOS_H_INCLUDE__
