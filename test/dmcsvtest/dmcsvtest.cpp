@@ -1,4 +1,4 @@
-#include "gtest.h"
+ï»¿#include "gtest.h"
 
 #include "dmcsv.hpp"
 #include "dmdsvfilter.hpp"
@@ -83,13 +83,13 @@ TEST(TimerTest, BasicTiming) {
 	strtk::util::timer t;
 	t.start();
 
-	// Ä£Äâ²Ù×÷£¬ºÄÊ±100ms
+	// æ¨¡æ‹Ÿæ“ä½œï¼Œè€—æ—¶100ms
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 	t.stop();
 	double elapsed_time = t.time();
 
-	// ¼ì²éÊ±¼ä´óÓÚ»ò½Ó½ü100ms (0.1Ãë)£¬·Å¿íÉÏÏÂÏŞ·¶Î§
+	// æ£€æŸ¥æ—¶é—´å¤§äºæˆ–æ¥è¿‘100ms (0.1ç§’)ï¼Œæ”¾å®½ä¸Šä¸‹é™èŒƒå›´
 	ASSERT_GT(elapsed_time, 0.095);
 	ASSERT_LT(elapsed_time, 0.115);
 
@@ -99,7 +99,7 @@ TEST(TimerTest, BasicTiming) {
 TEST(TimerTest, InUseStatus) {
 	strtk::util::timer t;
 
-	// ³õÊ¼»¯×´Ì¬Ó¦Îª²»Ê¹ÓÃ
+	// åˆå§‹åŒ–çŠ¶æ€åº”ä¸ºä¸ä½¿ç”¨
 	ASSERT_FALSE(t.in_use());
 
 	t.start();
@@ -122,11 +122,11 @@ TEST(TimerTest, ConsecutiveMeasurements) {
 	t.stop();
 	double second_time = t.time();
 
-	// ·Å¿í·¶Î§£º0.05Ãëµ½0.07Ãë
+	// æ”¾å®½èŒƒå›´ï¼š0.05ç§’åˆ°0.07ç§’
 	ASSERT_GT(first_time, 0.045);
 	ASSERT_LT(first_time, 0.070);
 
-	// ·Å¿í·¶Î§£º0.095Ãëµ½0.115Ãë
+	// æ”¾å®½èŒƒå›´ï¼š0.095ç§’åˆ°0.115ç§’
 	ASSERT_GT(second_time, 0.095);
 	ASSERT_LT(second_time, 0.115);
 }
@@ -134,7 +134,7 @@ TEST(TimerTest, ConsecutiveMeasurements) {
 TEST(TimerTest, ZeroTimeWhenNotStarted) {
 	strtk::util::timer t;
 
-	// Î´Æô¶¯¼ÆÊ±Æ÷Ê±µ÷ÓÃtime£¬²»Ó¦¸ÃÊ¹ÓÃ
+	// æœªå¯åŠ¨è®¡æ—¶å™¨æ—¶è°ƒç”¨timeï¼Œä¸åº”è¯¥ä½¿ç”¨
 	ASSERT_FALSE(t.in_use());
 }
 
@@ -142,13 +142,13 @@ TEST(TimerTest, RepeatedStartWithoutStop) {
 	strtk::util::timer t;
 	t.start();
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	t.start(); // ÔÙ´ÎÆô¶¯£¬¸²¸ÇÖ®Ç°µÄÊ±¼ä
+	t.start(); // å†æ¬¡å¯åŠ¨ï¼Œè¦†ç›–ä¹‹å‰çš„æ—¶é—´
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	t.stop();
 
 	double elapsed_time = t.time();
 
-	// ·Å¿í·¶Î§£º0.045Ãëµ½0.065Ãë
+	// æ”¾å®½èŒƒå›´ï¼š0.045ç§’åˆ°0.065ç§’
 	ASSERT_GT(elapsed_time, 0.045);
 	ASSERT_LT(elapsed_time, 0.065);
 }
