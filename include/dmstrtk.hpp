@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  *****************************************************************
  *                     String Toolkit Library                    *
  *                                                               *
@@ -28026,9 +28026,9 @@ namespace strtk {
 			inline double time() const {
 				if (!in_use_) {
 					auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_time_ - start_time_);
-					return duration.count() * 0.000001; // ×ª»»ÎªÃë
+					return duration.count() * 0.000001; // è½¬æ¢ä¸ºç§’
 				}
-				return std::numeric_limits<double>::max(); // Èç¹û¼ÆÊ±Æ÷ÈÔÔÚÔËĞĞ£¬·µ»Ø×î´óÖµ±íÊ¾´íÎó×´Ì¬
+				return std::numeric_limits<double>::max(); // å¦‚æœè®¡æ—¶å™¨ä»åœ¨è¿è¡Œï¼Œè¿”å›æœ€å¤§å€¼è¡¨ç¤ºé”™è¯¯çŠ¶æ€
 			}
 
 			inline bool in_use() const {
